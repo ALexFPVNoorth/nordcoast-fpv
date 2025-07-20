@@ -11,98 +11,150 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
     <style>
-        /* * Apple-inspired design: minimalism, smooth animations, premium feel.
-         * Mobile scroll fix implemented.
+        /* * Final Polished Version: Layout changes, new animations, and bug fixes.
          */
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
-
         @keyframes modal-pop-in {
             from { opacity: 0; transform: scale(0.95); }
             to { opacity: 1; transform: scale(1); }
+        }
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        @keyframes pulse-text {
+            0%, 100% { opacity: 0.7; }
+            50% { opacity: 1; }
         }
 
         body {
             font-family: 'Inter', sans-serif;
             background-color: #050505;
             background-image: radial-gradient(circle at top, #1a1a1a, #050505);
-            color: #e2e8f0; /* Lighter gray for better contrast */
+            color: #e2e8f0;
             min-height: 100vh;
         }
-
         .header-sticky {
-            position: sticky;
-            top: 0;
-            z-index: 40;
+            position: sticky; top: 0; z-index: 40;
             background-color: rgba(5, 5, 5, 0.6);
             backdrop-filter: blur(12px);
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
-
+        /* Headline fix for letter clipping */
+        #main-headline {
+            line-height: 1.2 !important;
+        }
         .card {
             background-color: rgba(23, 23, 23, 0.5);
             border: 1px solid #27272a;
             transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
             animation: fadeIn 0.5s ease-out forwards;
-            opacity: 0; /* Start hidden for animation */
+            opacity: 0;
+            position: relative;
+            overflow: hidden;
         }
-
         .card:hover {
             transform: translateY(-8px);
             border-color: #71717a;
             box-shadow: 0 0 25px rgba(59, 130, 246, 0.1), 0 4px 10px rgba(0,0,0,0.3);
         }
-
+        /* New, more realistic propeller SVG */
+        .card .animated-prop {
+            position: absolute;
+            top: -20px;
+            right: -20px;
+            width: 90px;
+            height: 90px;
+            opacity: 0;
+            transition: opacity 0.4s ease, transform 0.4s ease;
+            transform: rotate(90deg) scale(0.8);
+        }
+        .card:hover .animated-prop {
+            opacity: 0.07;
+            transform: rotate(0deg) scale(1);
+            animation: spin 5s linear infinite;
+        }
         .lang-btn {
             border: 1px solid #374151;
             transition: background-color 0.3s ease, color 0.3s ease;
         }
-
         .lang-btn.active {
             background-color: #e5e7eb;
             color: #111827;
             font-weight: 700;
         }
-        
         .details-btn {
-            background-color: #2563eb;
-            color: white;
-            padding: 8px 16px;
-            border-radius: 9999px; /* pill shape */
-            font-weight: 500;
+            background-color: #2563eb; color: white; padding: 8px 16px;
+            border-radius: 9999px; font-weight: 500;
             transition: all 0.3s ease;
         }
-
-        .details-btn:hover {
-            background-color: #1d4ed8;
-            transform: scale(1.05);
-        }
-
-        .modal-backdrop {
-            backdrop-filter: blur(8px);
-        }
-
-        .modal-content-wrapper {
-            animation: modal-pop-in 0.3s ease-out forwards;
-        }
-
-        .whatsapp-fab {
+        .details-btn:hover { background-color: #1d4ed8; transform: scale(1.05); }
+        .modal-backdrop { backdrop-filter: blur(8px); }
+        .modal-content-wrapper { animation: modal-pop-in 0.3s ease-out forwards; }
+        
+        /* WhatsApp button with text */
+        .whatsapp-container {
             position: fixed;
             bottom: 2rem;
             right: 2rem;
             z-index: 50;
-            transition: transform 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
         }
-
-        .whatsapp-fab:hover {
-            transform: scale(1.1);
+        .whatsapp-text {
+            color: #a1a1aa;
+            font-size: 0.875rem;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            background-color: rgba(39, 39, 42, 0.7);
+            border: 1px solid #3f3f46;
+            border-radius: 9999px;
+            backdrop-filter: blur(8px);
+            animation: pulse-text 4s ease-in-out infinite;
+            transition: color 0.3s ease;
+            pointer-events: none;
         }
-
-        .price-tag {
-            font-size: 1.125rem; /* text-lg */
-            font-weight: 600; /* semibold */
+        .whatsapp-container:hover .whatsapp-text {
+            color: #fafafa;
+            animation: none;
+        }
+        .whatsapp-fab { transition: transform 0.3s ease; }
+        .whatsapp-container:hover .whatsapp-fab { transform: scale(1.1); }
+        
+        .price-tag { font-size: 1.125rem; font-weight: 600; color: #93c5fd; }
+        
+        /* FPV Advantage Section Styles */
+        .accordion-item {
+            background-color: rgba(23, 23, 23, 0.5);
+            border: 1px solid #27272a;
+            transition: background-color 0.3s ease;
+        }
+        .accordion-item:hover { background-color: rgba(30, 30, 30, 0.7); }
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-out, padding 0.5s ease-out;
+            padding-left: 1.5rem; padding-right: 1.5rem;
+        }
+        .accordion-item.is-open .accordion-content {
+            max-height: 1000px; /* Large enough to fit content */
+            padding-top: 1rem; padding-bottom: 1.5rem;
+        }
+        .accordion-arrow { transition: transform 0.5s ease; }
+        .accordion-item.is-open .accordion-arrow { transform: rotate(180deg); }
+        .accordion-icon {
+            margin-right: 1rem;
+            flex-shrink: 0;
+            width: 28px;
+            height: 28px;
+            color: #60a5fa; /* blue-400 */
+            transition: color 0.3s ease;
+        }
+        .accordion-item:hover .accordion-icon {
             color: #93c5fd; /* blue-300 */
         }
     </style>
@@ -123,27 +175,39 @@
     <!-- Main Content -->
     <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
         <div class="text-center mb-16 md:mb-20">
-            <h2 id="main-headline" class="text-4xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-gray-200 to-blue-300 mb-6 leading-tight"></h2>
+            <h2 id="main-headline" class="text-4xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-gray-200 to-blue-300 mb-6"></h2>
             <p id="main-subheadline" class="max-w-3xl mx-auto text-lg md:text-xl text-gray-400"></p>
         </div>
+        
+        <!-- FPV Advantage Section (MOVED UP) -->
+        <section class="advantage-section mb-24 md:mb-32">
+            <div id="accordion-container" class="relative max-w-4xl mx-auto space-y-4">
+                <!-- Accordion items will be injected here -->
+            </div>
+        </section>
 
         <!-- Services Grid -->
+        <div class="text-center mb-12">
+            <h3 id="services-title" class="text-3xl md:text-4xl font-bold"></h3>
+        </div>
         <div id="services-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
             <!-- Service cards will be injected here by JavaScript -->
         </div>
     </main>
 
-    <!-- WhatsApp Floating Action Button -->
-    <a href="https://api.whatsapp.com/send?phone=97694860591&text&context=AffGJcAAZEQ5eK5EVlvDwoSi10Bd9fdtQZYwM4FZrHOtEXLwUB0cmSDBse3dhaAZ-OKHWHMDp9vVjxb6Bqw5baHASin84_xGHBqqAXU9DWaxMIKj8gIB5mDbJR3DtSrBW5UUkEP507tzyUyeVRmAaprMng&source&app=facebook" target="_blank" class="whatsapp-fab">
-        <div class="bg-green-500 hover:bg-green-600 text-white rounded-full p-4 shadow-lg">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="32" height="32" fill="currentColor"><path d="M16.6 14c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1-.2.2-.6.8-.8 1-.1.2-.3.2-.5.1-.2-.1-1-.4-1.9-1.2-.7-.6-1.2-1.4-1.3-1.6-.1-.2 0-.4.1-.5.1-.1.2-.2.4-.4.1-.1.2-.2.3-.4.1-.1.1-.3 0-.4-.1-.1-.6-1.5-.8-2-.2-.5-.4-.4-.5-.4h-.5c-.2 0-.4.1-.6.3-.2.2-.8.8-.8 1.9 0 1.1.8 2.2 1 2.4.1.2 1.5 2.3 3.7 3.2.5.2.9.4 1.2.5.5.2 1 .1 1.3-.1.4-.2.6-.9.8-1.7.2-.8.2-1.5.1-1.7-.1-.2-.3-.3-.5-.4zM12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm0 18.2c-4.5 0-8.2-3.7-8.2-8.2S7.5 3.8 12 3.8 20.2 7.5 20.2 12 16.5 20.2 12 20.2z"/></svg>
+    <!-- WhatsApp Floating Action Button with Text -->
+    <a href="https://api.whatsapp.com/send?phone=97694860591&text&context=AffGJcAAZEQ5eK5EVlvDwoSi10Bd9fdtQZYwM4FZrHOtEXLwUB0cmSDBse3dhaAZ-OKHWHMDp9vVjxb6Bqw5baHASin84_xGHBqqAXU9DWaxMIKj8gIB5mDbJR3DtSrBW5UUkEP507tzyUyeVRmAaprMng&source&app=facebook" target="_blank" class="whatsapp-container">
+        <span id="whatsapp-text" class="whatsapp-text"></span>
+        <div class="whatsapp-fab">
+            <div class="bg-green-500 hover:bg-green-600 text-white rounded-full p-4 shadow-lg">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="32" height="32" fill="currentColor"><path d="M16.6 14c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1-.2.2-.6.8-.8 1-.1.2-.3.2-.5.1-.2-.1-1-.4-1.9-1.2-.7-.6-1.2-1.4-1.3-1.6-.1-.2 0-.4.1-.5.1-.1.2-.2.4-.4.1-.1.2-.2.3-.4.1-.1.1-.3 0-.4-.1-.1-.6-1.5-.8-2-.2-.5-.4-.4-.5-.4h-.5c-.2 0-.4.1-.6.3-.2.2-.8.8-.8 1.9 0 1.1.8 2.2 1 2.4.1.2 1.5 2.3 3.7 3.2.5.2.9.4 1.2.5.5.2 1 .1 1.3-.1.4-.2.6-.9.8-1.7.2-.8.2-1.5.1-1.7-.1-.2-.3-.3-.5-.4zM12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm0 18.2c-4.5 0-8.2-3.7-8.2-8.2S7.5 3.8 12 3.8 20.2 7.5 20.2 12 16.5 20.2 12 20.2z"/></svg>
+            </div>
         </div>
     </a>
 
     <!-- Modal -->
     <div id="modal" class="fixed inset-0 z-50 hidden overflow-y-auto">
         <div class="modal-backdrop fixed inset-0 bg-black bg-opacity-75"></div>
-        <!-- This div helps with vertical centering on desktop and provides a scrollable container -->
         <div class="flex min-h-full items-center justify-center p-4 text-center">
             <div class="modal-content-wrapper relative w-full max-w-2xl transform text-left transition-all">
                 <div class="bg-gray-900 border border-gray-700 rounded-lg shadow-xl">
@@ -153,9 +217,7 @@
                     </div>
                     <div class="px-6 md:px-8 pb-6 md:pb-8">
                         <p id="modal-price" class="text-xl font-semibold text-blue-400 mb-6"></p>
-                        <div id="modal-body" class="prose prose-invert max-w-none text-gray-300">
-                            <!-- Modal content will be injected here -->
-                        </div>
+                        <div id="modal-body" class="prose prose-invert max-w-none text-gray-300"></div>
                     </div>
                 </div>
             </div>
@@ -169,111 +231,59 @@
             mn: {
                 headline: "Мэргэжлийн FPV дроны засвар, зөвлөгөө, видео бичлэгийн үйлчилгээ",
                 subheadline: "Бид таны брэнд, арга хэмжээ, үл хөдлөх хөрөнгө, онцгой мөчүүдэд зориулсан дахин давтагдашгүй, динамик видео бичлэгийг бүтээдэг.",
+                servicesTitle: "Үйлчилгээнүүд",
+                whatsappText: "Шууд холбогдох!",
                 services: [
-                    {
-                        title: "Сонгодог FPV танилцуулга",
-                        price: "800,000₮-с эхэлнэ",
-                        short_desc: "Брэнд, хувь хүн, хобби, тэмцээнийг сурталчлахад тохиромжтой имижийн видео.",
-                        details: `<p>Энэхүү багц нь ямар нэгэн зүйлийг сурталчлах, хувь хүн эсвэл хосын бичлэг хийх, хүний хобби, тэмцээн, тайзан дээрх үзүүлбэрийг буулгахад төгс тохирно.</p><h4 class="font-semibold text-white mt-4">Багцад багтсан зүйлс:</h4><ul><li>Зураг авалт</li><li>Эвлүүлэг</li><li>Өнгөний засвар (Color Correction)</li><li><strong>Нэмэлт:</strong> Саунд дизайн (бодит дуу чимээг бичиж, ашиглах) - <strong>150,000₮</strong></li></ul><p class="mt-4"><strong>Үндсэн үнэ:</strong> 800,000₮</p><p><strong>Саунд дизайнтай үнэ:</strong> 950,000₮</p>`
-                    },
-                    {
-                        title: "One-Shot (Нэг кадр)",
-                        price: "1,500,000₮",
-                        short_desc: "Үйлдвэр, оффис, ресторан, худалдааны төвд зориулсан тасралтгүй, гайхалтай видео аялал.",
-                        details: `<p>Дрон гаднаас байгууламж руу нэвтэрч, үйл ажиллагааны явцад захиалагчийн хүссэн бүх зүйлийг нэг кадрт багтаан харуулдаг. Энэ нь маш нарийн төвөгтэй төсөл бөгөөд зураг авалтын өмнөх бэлтгэл (pre-production) хамгийн чухал гэдгийг ойлгох хэрэгтэй.</p><h4 class="font-semibold text-white mt-4">Үйл явц:</h4><ul class="list-decimal list-inside"><li><strong>1-р өдөр (Бэлтгэл):</strong><ul class="list-disc list-inside ml-4"><li>Сценари, нислэгийн зам боловсруулах, дохионы тест хийх.</li><li>Дотор болон гадна талбайн туршилтын нислэг хийж, нисгэгчийн зөв байршлыг тодорхойлох.</li><li>Үзэгдлүүдийн туршилт хийж, сул талыг илрүүлэх.</li></ul></li><li><strong>2-р өдөр (Зураг авалт):</strong><ul class="list-disc list-inside ml-4"><li>Оролцогчидтой уулзаж, аюулгүй байдлын зааварчилгаа өгөх.</li><li>Хэд хэдэн удаагийн давталттайгаар зураг авалт хийх.</li><li>Бичлэгийг шалгаж, саунд дизайнд шаардлагатай дуу чимээний жагсаалт гаргах.</li><li>Саунд дизайнд зориулсан дуу бичлэг хийх.</li></ul></li></ul><p class="mt-4"><strong>Эцсийн бүтээгдэхүүн:</strong> Захиалагчийн сошиал сүлжээнд зориулсан, саунд дизайн, хөгжим, өнгөний засвар, боловсруулсан траектори бүхий 1+ минутын имижийн видео.</p>`
-                    },
-                    {
-                        title: "Арга хэмжээний бичлэг",
-                        price: "250,000₮/цаг-с эхэлнэ",
-                        short_desc: "Концерт, хурал, фестивалийн динамик агшинг буулгах. Шуурхай монтаж хийх боломжтой.",
-                        details: `<p>Төрөл бүрийн арга хэмжээг, тэр дундаа барилга доторх үйл ажиллагааг бичнэ.</p><h4 class="font-semibold text-white mt-4">Сонголтууд:</h4><ul><li><strong>Үндсэн багц:</strong> <strong>250,000₮/цаг</strong>. Эвлүүлэггүй. Бэлэн болсон, тогтворжуулсан, өнгө зассан хар дурсыг 24 цагийн дотор хүлээлгэн өгнө.</li><li><strong>Шуурхай багц:</strong> <strong>350,000₮/цаг</strong>. Арга хэмжээний үеэр хар дурсыг шууд авах боломжтой.</li><li><strong>Нэмэлт:</strong> Захиалагчийн хөгжимтэй 1 минутын хайлайт видео - <strong>100,000₮</strong>.</li></ul>`
-                    },
-                    {
-                        title: "Хуримын зураг авалт",
-                        price: "250,000₮/цаг-с эхэлнэ",
-                        short_desc: "Хуримын ерөнхий видеомейкертэй хамтран ажиллаж, мартагдашгүй агшинг буулгана.",
-                        details: `<p>Хуримын эцсийн тайлан видеонд зориулсан ерөнхий планын зураг авалт.</p><h4 class="font-semibold text-white mt-4">Сонголтууд:</h4><ul><li><strong>Хамтын ажиллагаа:</strong> <strong>250,000₮/цаг</strong>. Урьдчилан тохиролцсон нягтрал, FPS-тэй бэлэн хар дурсыг хүлээлгэн өгнө.</li><li><strong>One-Shot хуримын видео:</strong> <strong>800,000₮</strong>. Хуримын үеэр зохион байгуулахад нарийн төвөгтэй тул үнэ өндөр. 2-р үйлчилгээний зарчмаар хийгдэнэ.</li></ul>`
-                    },
-                    {
-                        title: "Үл хөдлөх хөрөнгийн бичлэг",
-                        price: "1,000,000₮-с эхэлнэ",
-                        short_desc: "Объектын онцлогийг харуулсан, график элемент нэмэх боломжтой One-Shot видео.",
-                        details: `<p>2-р үйлчилгээний адилаар бэлтгэл ажил хийгдэнэ. Захиалагч саунд дизайныг хасч, график элемент нэмэх боломжтой.</p><h4 class="font-semibold text-white mt-4">Үнэ:</h4><ul><li><strong>One-Shot видео:</strong> <strong>1,000,000₮</strong></li><li><strong>Нэмэлт:</strong> График (Текстийг After Effects-ээр трекинг хийх) - <strong>200,000₮</strong></li><li><strong>Нэмэлт:</strong> Саунд дизайн - <strong>150,000₮</strong></li></ul>`
-                    },
-                    {
-                        title: "FPV шууд дамжуулалт",
-                        price: "250,000₮/цаг",
-                        short_desc: "Арга хэмжээ, тэмцээн, хуримыг дроноос шууд дамжуулах үйлчилгээ.",
-                        details: `<p>Дроноос ирэх дохиог найруулагчийн пульт руу HDMI-аар дамжуулна.</p><h4 class="font-semibold text-white mt-4">Техникийн үзүүлэлт:</h4><ul><li><strong>Сигнал:</strong> HDMI 1080p</li><li><strong>FPS:</strong> 25 эсвэл 50 (найруулагчийн хүсэлтээр)</li><li><strong>Харилцаа:</strong> Интерком системээр (дамжуулах багаас хангана)</li></ul>`
-                    },
-                    {
-                        title: "Дрон засвар, тохиргоо",
-                        price: "50,000₮-с эхэлнэ",
-                        short_desc: "Таны FPV дроныг оношлох, засах, тохируулах, зөвлөгөө өгөх үйлчилгээ.",
-                        details: `<h4 class="font-semibold text-white mt-4">Үйлчилгээнүүд:</h4><ul><li><strong>Засвар:</strong> <strong>100,000₮-с эхэлнэ</strong> (ажлын хэмжээнээс хамаарч үнэ нэмэгдэж болно, үнийн өсөлт бүрийг тайлбарлана).</li><li><strong>Тохиргоо ба зөвлөгөө:</strong> <strong>50,000₮</strong>. Дроныг тохируулах, таны FPV иж бүрдлийг бүрэн шалгах, ашиглалтын хугацаа, нислэгийн аюулгүй байдлыг нэмэгдүүлэх зөвлөгөө өгнө.</li></ul>`
-                    },
-                    {
-                        title: "Захиалгат дрон угсралт",
-                        price: "250,000₮ + эд ангийн үнэ",
-                        short_desc: "Таны зорилгод яг тохирсон FPV дроныг эхнээс нь дуустал угсарч, бэлэн болгож өгнө.",
-                        details: `<p>Би өөрөө эд ангиудыг захиалж, дроныг угсарч, тохируулж, электроникийн бүх хэсгийг шалгаж, нисэхэд бэлэн болгоно.</p><h4 class="font-semibold text-white mt-4">Багцад багтсан зүйлс:</h4><ul><li>Эд анги захиалах, угсрах, тохируулах</li><li>Нислэгт бэлэн болгосон иж бүрэн дрон</li><li>Сэлбэг хэрэгсэл, зарцуулах материалууд</li><li>Байршил сонгох, дохионы онцлог, аюулгүй нислэгийн талаар зөвлөгөө өгөх</li></ul><p class="mt-4"><strong>Үйлчилгээний хөлс:</strong> Дрон болон түүний бүх эд анги, Монгол руу тээвэрлэх зардлаас гадна <strong>250,000₮</strong>. Төлбөрийн баримтыг шаардлагатай бол гаргаж өгнө.</p>`
-                    }
-                ]
+                    { title: "Сонгодог FPV танилцуулга", price: "800,000₮-с эхэлнэ", short_desc: "Брэнд, хувь хүн, хобби, тэмцээнийг сурталчлахад тохиромжтой имижийн видео.", details: `<p>Энэхүү багц нь ямар нэгэн зүйлийг сурталчлах, хувь хүн эсвэл хосын бичлэг хийх, хүний хобби, тэмцээн, тайзан дээрх үзүүлбэрийг буулгахад төгс тохирно.</p><h4 class="font-semibold text-white mt-4">Багцад багтсан зүйлс:</h4><ul><li>Зураг авалт</li><li>Эвлүүлэг</li><li>Өнгөний засвар (Color Correction)</li><li><strong>Нэмэлт:</strong> Саунд дизайн (бодит дуу чимээг бичиж, ашиглах) - <strong>150,000₮</strong></li></ul><p class="mt-4"><strong>Үндсэн үнэ:</strong> 800,000₮</p><p><strong>Саунд дизайнтай үнэ:</strong> 950,000₮</p>` },
+                    { title: "One-Shot (Нэг кадр)", price: "1,500,000₮", short_desc: "Үйлдвэр, оффис, ресторан, худалдааны төвд зориулсан тасралтгүй, гайхалтай видео аялал.", details: `<p>Дрон гаднаас байгууламж руу нэвтэрч, үйл ажиллагааны явцад захиалагчийн хүссэн бүх зүйлийг нэг кадрт багтаан харуулдаг. Энэ нь маш нарийн төвөгтэй төсөл бөгөөд зураг авалтын өмнөх бэлтгэл (pre-production) хамгийн чухал гэдгийг ойлгох хэрэгтэй.</p><h4 class="font-semibold text-white mt-4">Үйл явц:</h4><ul class="list-decimal list-inside"><li><strong>1-р өдөр (Бэлтгэл):</strong><ul class="list-disc list-inside ml-4"><li>Сценари, нислэгийн зам боловсруулах, дохионы тест хийх.</li><li>Дотор болон гадна талбайн туршилтын нислэг хийж, нисгэгчийн зөв байршлыг тодорхойлох.</li><li>Үзэгдлүүдийн туршилт хийж, сул талыг илрүүлэх.</li></ul></li><li><strong>2-р өдөр (Зураг авалт):</strong><ul class="list-disc list-inside ml-4"><li>Оролцогчидтой уулзаж, аюулгүй байдлын зааварчилгаа өгөх.</li><li>Хэд хэдэн удаагийн давталттайгаар зураг авалт хийх.</li><li>Бичлэгийг шалгаж, саунд дизайнд шаардлагатай дуу чимээний жагсаалт гаргах.</li><li>Саунд дизайнд зориулсан дуу бичлэг хийх.</li></ul></li></ul><p class="mt-4"><strong>Эцсийн бүтээгдэхүүн:</strong> Захиалагчийн сошиал сүлжээнд зориулсан, саунд дизайн, хөгжим, өнгөний засвар, боловсруулсан траектори бүхий 1+ минутын имижийн видео.</p>` },
+                    { title: "Арга хэмжээний бичлэг", price: "250,000₮/цаг-с эхэлнэ", short_desc: "Концерт, хурал, фестивалийн динамик агшинг буулгах. Шуурхай монтаж хийх боломжтой.", details: `<p>Төрөл бүрийн арга хэмжээг, тэр дундаа барилга доторх үйл ажиллагааг бичнэ.</p><h4 class="font-semibold text-white mt-4">Сонголтууд:</h4><ul><li><strong>Үндсэн багц:</strong> <strong>250,000₮/цаг</strong>. Эвлүүлэггүй. Бэлэн болсон, тогтворжуулсан, өнгө зассан хар дурсыг 24 цагийн дотор хүлээлгэн өгнө.</li><li><strong>Шуурхай багц:</strong> <strong>350,000₮/цаг</strong>. Арга хэмжээний үеэр хар дурсыг шууд авах боломжтой.</li><li><strong>Нэмэлт:</strong> Захиалагчийн хөгжимтэй 1 минутын хайлайт видео - <strong>100,000₮</strong>.</li></ul>` },
+                    { title: "Хуримын зураг авалт", price: "250,000₮/цаг-с эхэлнэ", short_desc: "Хуримын ерөнхий видеомейкертэй хамтран ажиллаж, мартагдашгүй агшинг буулгана.", details: `<p>Хуримын эцсийн тайлан видеонд зориулсан ерөнхий планын зураг авалт.</p><h4 class="font-semibold text-white mt-4">Сонголтууд:</h4><ul><li><strong>Хамтын ажиллагаа:</strong> <strong>250,000₮/цаг</strong>. Урьдчилан тохиролцсон нягтрал, FPS-тэй бэлэн хар дурсыг хүлээлгэн өгнө.</li><li><strong>One-Shot хуримын видео:</strong> <strong>800,000₮</strong>. Хуримын үеэр зохион байгуулахад нарийн төвөгтэй тул үнэ өндөр. 2-р үйлчилгээний зарчмаар хийгдэнэ.</li></ul>` },
+                    { title: "Үл хөдлөх хөрөнгийн бичлэг", price: "1,000,000₮-с эхэлнэ", short_desc: "Объектын онцлогийг харуулсан, график элемент нэмэх боломжтой One-Shot видео.", details: `<p>2-р үйлчилгээний адилаар бэлтгэл ажил хийгдэнэ. Захиалагч саунд дизайныг хасч, график элемент нэмэх боломжтой.</p><h4 class="font-semibold text-white mt-4">Үнэ:</h4><ul><li><strong>One-Shot видео:</strong> <strong>1,000,000₮</strong></li><li><strong>Нэмэлт:</strong> График (Текстийг After Effects-ээр трекинг хийх) - <strong>200,000₮</strong></li><li><strong>Нэмэлт:</strong> Саунд дизайн - <strong>150,000₮</strong></li></ul>` },
+                    { title: "FPV шууд дамжуулалт", price: "250,000₮/цаг", short_desc: "Арга хэмжээ, тэмцээн, хуримыг дроноос шууд дамжуулах үйлчилгээ.", details: `<p>Дроноос ирэх дохиог найруулагчийн пульт руу HDMI-аар дамжуулна.</p><h4 class="font-semibold text-white mt-4">Техникийн үзүүлэлт:</h4><ul><li><strong>Сигнал:</strong> HDMI 1080p</li><li><strong>FPS:</strong> 25 эсвэл 50 (найруулагчийн хүсэлтээр)</li><li><strong>Харилцаа:</strong> Интерком системээр (дамжуулах багаас хангана)</li></ul>` },
+                    { title: "Дрон засвар, тохиргоо", price: "50,000₮-с эхэлнэ", short_desc: "Таны FPV дроныг оношлох, засах, тохируулах, зөвлөгөө өгөх үйлчилгээ.", details: `<h4 class="font-semibold text-white mt-4">Үйлчилгээнүүд:</h4><ul><li><strong>Засвар:</strong> <strong>100,000₮-с эхэлнэ</strong> (ажлын хэмжээнээс хамаарч үнэ нэмэгдэж болно, үнийн өсөлт бүрийг тайлбарлана).</li><li><strong>Тохиргоо ба зөвлөгөө:</strong> <strong>50,000₮</strong>. Дроныг тохируулах, таны FPV иж бүрдлийг бүрэн шалгах, ашиглалтын хугацаа, нислэгийн аюулгүй байдлыг нэмэгдүүлэх зөвлөгөө өгнө.</li></ul>` },
+                    { title: "Захиалгат дрон угсралт", price: "250,000₮ + эд ангийн үнэ", short_desc: "Таны зорилгод яг тохирсон FPV дроныг эхнээс нь дуустал угсарч, бэлэн болгож өгнө.", details: `<p>Би өөрөө эд ангиудыг захиалж, дроныг угсарч, тохируулж, электроникийн бүх хэсгийг шалгаж, нисэхэд бэлэн болгоно.</p><h4 class="font-semibold text-white mt-4">Багцад багтсан зүйлс:</h4><ul><li>Эд анги захиалах, угсрах, тохируулах</li><li>Нислэгт бэлэн болгосон иж бүрэн дрон</li><li>Сэлбэг хэрэгсэл, зарцуулах материалууд</li><li>Байршил сонгох, дохионы онцлог, аюулгүй нислэгийн талаар зөвлөгөө өгөх</li></ul><p class="mt-4"><strong>Үйлчилгээний хөлс:</strong> Дрон болон түүний бүх эд анги, Монгол руу тээвэрлэх зардлаас гадна <strong>250,000₮</strong>. Төлбөрийн баримтыг шаардлагатай бол гаргаж өгнө.</p>` }
+                ],
+                advantage: {
+                    items: [
+                        { title: "Нэгдүгээр биеэс харах өнцөг", content: "Стандарт дронуудаас (DJI Mavic гэх мэт) ялгаатай нь FPV (First-Person View) бол нислэгийн огт өөр философи юм. Би утасны дэлгэц рүү хардаггүй; Би FPV нүдний шил зүүж, дроны нүдээр ертөнцийг харж, түүнийг нарийн удирддаг. Энэ нь нарийн нүхээр нисэх, объектыг маш ойроос дагах, агаарт бүжиглэх зэрэг автомат системүүдэд боломжгүй траекторийг бий болгох боломжийг олгодог." },
+                        { title: "Хоёр хэв маяг - Хязгааргүй боломж", content: "Миний туршлага нь эрс тэс хоёр хэв маягаар ажиллах боломжийг олгодог бөгөөд тус бүртээ өөр төрлийн дрон ашигладаг:<br><br><strong>Кино урлагийн гоо зүй:</strong> Имижийн видео, үл хөдлөх хөрөнгө, хуримын зураг авалтад би хөнгөн, чимээгүй дронуудыг (cinewhoops) ашигладаг. Тэд дотор болон хүмүүсийн ойролцоо нисэхэд аюулгүй бөгөөд жигд, сэтгэл татам кадруудыг бий болгодог.<br><br><strong>Экстрим динамик:</strong> Эрч хүч, хөдөлгөөнийг дамжуулахын тулд FPV-ээс илүү сайн зүйл үгүй. Дрифт, ралли, уралдаан болон бусад хурдтай үйл явдлын зураг авалтад би хүчирхэг 5 инчийн дронуудыг ашигладаг. Тэд 150 км/ц-аас дээш хурдтай машиныг дагаж, үзэгчийн зүрхийг цохилуулах эрч хүчтэй, галзуу кадруудыг бүтээдэг." },
+                        { title: "Ур чадвар ба Аюулгүй байдал", content: "<strong>Тасралтгүй хөгжил:</strong> FPV нисгэгчийн ур чадвар олон зуун цагийн бэлтгэл шаарддаг. Би бодит нөхцөлд хамгийн өндөр чанар, тогтвортой байдлыг хангахын тулд мэргэжлийн симулятор дээр өдөр бүр ур чадвараа дээшлүүлдэг.<br><br><strong>Бүх нөхцөлд бэлэн:</strong> FPV ертөнцөд уналт бол ажлын явцын нэг хэсэг юм. Засварлахад үнэтэй, төвөгтэй арилжааны дронуудаас ялгаатай нь би өөрийн техникийг хээрийн нөхцөлд шууд засварлах техникийн бааз, ур чадвартай. Энэ нь техникийн доголдлоос болж зураг авалт зогсохгүй гэсэн баталгаа юм.<br><br><strong>Аюулгүй байдал:</strong> Нислэг бүрийн өмнө, дроны хэмжээнээс үл хамааран би зураг авалтад оролцогч бүрт аюулгүй ажиллагааны зааварчилгааг заавал өгдөг. Таны аюулгүй байдал, сэтгэл ханамж бол бидний туйлын зорилго юм." }
+                    ]
+                }
             },
             en: {
                 headline: "Professional FPV Drone Services: Repair, Consulting, and Cinematography",
                 subheadline: "We create unforgettable, dynamic aerial footage for your brand, event, real estate, and special moments.",
+                servicesTitle: "Services",
+                whatsappText: "Contact now!",
                 services: [
-                    {
-                        title: "Classic FPV Promo",
-                        price: "Starts from ₮800,000",
-                        short_desc: "An image-focused video perfect for advertising, individuals, hobbies, or performances.",
-                        details: `<p>This package is perfect for promoting a brand, filming an individual or a couple, capturing a person's hobby, or their performances at competitions or on stage.</p><h4 class="font-semibold text-white mt-4">What's included:</h4><ul><li>Filming</li><li>Editing</li><li>Color Correction</li><li><strong>Optional:</strong> Sound Design (recording and using real-world sounds) - <strong>₮150,000</strong></li></ul><p class="mt-4"><strong>Base Price:</strong> ₮800,000</p><p><strong>Price with Sound Design:</strong> ₮950,000</p>`
-                    },
-                    {
-                        title: "One-Shot Tour",
-                        price: "₮1,500,000",
-                        short_desc: "A seamless, breathtaking video tour for establishments, factories, cafes, or malls.",
-                        details: `<p>The drone flies from the outside into the premises, showcasing everything the client needs in a single, uninterrupted take during business hours. This is a complex project where pre-production is more crucial than the flight itself.</p><h4 class="font-semibold text-white mt-4">The Process:</h4><ul class="list-decimal list-inside"><li><strong>Day 1 (Pre-production):</strong><ul class="list-disc list-inside ml-4"><li>Scenario and flight path development, radio signal tests.</li><li>Indoor/outdoor test flights to determine optimal pilot locations for radio coverage.</li><li>Test simulations of scenes to find weak points and refine the trajectory.</li></ul></li><li><strong>Day 2 (Shooting):</strong><ul class="list-disc list-inside ml-4"><li>Briefing with actors on safety and rehearsing mini-scenes.</li><li>Filming, which may take several takes to perfect.</li><li>Reviewing drafts and creating a list of sounds for sound design.</li><li>Recording audio for sound design.</li></ul></li></ul><p class="mt-4"><strong>Final Product:</strong> A 1+ minute cinematic video for the client's social media, complete with sound design, music, color correction, and a well-thought-out trajectory with mini-scenes.</p>`
-                    },
-                    {
-                        title: "Event Coverage",
-                        price: "Starts from ₮250,000/hr",
-                        short_desc: "Capture the dynamic moments of concerts, conferences, or festivals. Fast turnaround available.",
-                        details: `<p>Filming various events, including those held indoors.</p><h4 class="font-semibold text-white mt-4">Options:</h4><ul><li><strong>Standard Package:</strong> <strong>₮250,000/hour</strong>. No editing. Stabilized and color-corrected raw footage delivered within 24 hours.</li><li><strong>Express Package:</strong> <strong>₮350,000/hour</strong>. Raw footage provided instantly during the event for immediate social media posting.</li><li><strong>Add-on:</strong> A 1-minute highlight video set to the client's music - <strong>₮100,000</strong>.</li></ul>`
-                    },
-                    {
-                        title: "Wedding Cinematography",
-                        price: "Starts from ₮250,000/hr",
-                        short_desc: "Collaborating with the main wedding videographer to capture unforgettable aerial shots.",
-                        details: `<p>Providing general aerial shots for the final wedding film.</p><h4 class="font-semibold text-white mt-4">Options:</h4><ul><li><strong>Collaboration:</strong> <strong>₮250,000/hour</strong>. Delivering raw, stabilized footage in a pre-agreed resolution and FPS.</li><li><strong>One-Shot Wedding Video:</strong> <strong>₮800,000</strong>. A complex option based on the 'One-Shot Tour' principles, which is challenging to organize during a live wedding, hence the higher price.</li></ul>`
-                    },
-                    {
-                        title: "Real Estate Showcase",
-                        price: "Starts from ₮1,000,000",
-                        short_desc: "A 'One-Shot' video with optional motion graphics to highlight property features.",
-                        details: `<p>Preparation is similar to the 'One-Shot Tour'. The client can opt-out of sound design in favor of graphic elements.</p><h4 class="font-semibold text-white mt-4">Pricing:</h4><ul><li><strong>One-Shot Video:</strong> <strong>₮1,000,000</strong></li><li><strong>Add-on:</strong> Motion Graphics (text tracking via After Effects to show square footage, etc.) - <strong>₮200,000</strong></li><li><strong>Add-on:</strong> Sound Design - <strong>₮150,000</strong></li></ul>`
-                    },
-                    {
-                        title: "Live FPV Broadcasting",
-                        price: "₮250,000/hour",
-                        short_desc: "Live stream from the drone for events, competitions, or weddings.",
-                        details: `<p>Providing a direct HDMI feed from the drone to the director's control panel.</p><h4 class="font-semibold text-white mt-4">Technical Specs:</h4><ul><li><strong>Signal:</strong> HDMI 1080p</li><li><strong>FPS:</strong> 25 or 50 (at the director's request)</li><li><strong>Communication:</strong> Via intercom systems (provided by the broadcast team) in English.</li></ul>`
-                    },
-                    {
-                        title: "Drone Repair & Tuning",
-                        price: "Starts from ₮50,000",
-                        short_desc: "Diagnostics, repair, tuning, and consultation for your FPV drone.",
-                        details: `<h4 class="font-semibold text-white mt-4">Services:</h4><ul><li><strong>Repair:</strong> <strong>Starts from ₮100,000</strong> (price may increase depending on the scope of work; any price increase will be justified).</li><li><strong>Tuning & Consultation:</strong> <strong>₮50,000</strong>. Includes drone tuning, a full check-up of your FPV kit, and advice to improve longevity and flight safety.</li></ul>`
-                    },
-                    {
-                        title: "Custom Drone Assembly",
-                        price: "₮250,000 + cost of parts",
-                        short_desc: "A turnkey solution: we build and configure an FPV drone specifically for your needs.",
-                        details: `<p>I will personally order the parts, assemble, and configure the drone, calibrating all electronics and equipment to provide you with a ready-to-fly solution.</p><h4 class="font-semibold text-white mt-4">What's included:</h4><ul><li>Ordering parts, assembly, and configuration</li><li>A complete, ready-to-fly drone</li><li>Consumables and spare parts</li><li>Consultation on location selection, radio signal specifics, and safe flying practices</li></ul><p class="mt-4"><strong>Service Fee:</strong> <strong>₮250,000</strong> on top of the cost for the drone and all its components, including shipping to Mongolia. Receipts provided upon request.</p>`
-                    }
-                ]
+                    { title: "Classic FPV Promo", price: "Starts from ₮800,000", short_desc: "An image-focused video perfect for advertising, individuals, hobbies, or performances.", details: `<p>This package is perfect for promoting a brand, filming an individual or a couple, capturing a person's hobby, or their performances at competitions or on stage.</p><h4 class="font-semibold text-white mt-4">What's included:</h4><ul><li>Filming</li><li>Editing</li><li>Color Correction</li><li><strong>Optional:</strong> Sound Design (recording and using real-world sounds) - <strong>₮150,000</strong></li></ul><p class="mt-4"><strong>Base Price:</strong> ₮800,000</p><p><strong>Price with Sound Design:</strong> ₮950,000</p>` },
+                    { title: "One-Shot Tour", price: "₮1,500,000", short_desc: "A seamless, breathtaking video tour for establishments, factories, cafes, or malls.", details: `<p>The drone flies from the outside into the premises, showcasing everything the client needs in a single, uninterrupted take during business hours. This is a complex project where pre-production is more crucial than the flight itself.</p><h4 class="font-semibold text-white mt-4">The Process:</h4><ul class="list-decimal list-inside"><li><strong>Day 1 (Pre-production):</strong><ul class="list-disc list-inside ml-4"><li>Scenario and flight path development, radio signal tests.</li><li>Indoor/outdoor test flights to determine optimal pilot locations for radio coverage.</li><li>Test simulations of scenes to find weak points and refine the trajectory.</li></ul></li><li><strong>Day 2 (Shooting):</strong><ul class="list-disc list-inside ml-4"><li>Briefing with actors on safety and rehearsing mini-scenes.</li><li>Filming, which may take several takes to perfect.</li><li>Reviewing drafts and creating a list of sounds for sound design.</li><li>Recording audio for sound design.</li></ul></li></ul><p class="mt-4"><strong>Final Product:</strong> A 1+ minute cinematic video for the client's social media, complete with sound design, music, color correction, and a well-thought-out trajectory with mini-scenes.</p>` },
+                    { title: "Event Coverage", price: "Starts from ₮250,000/hr", short_desc: "Capture the dynamic moments of concerts, conferences, or festivals. Fast turnaround available.", details: `<p>Filming various events, including those held indoors.</p><h4 class="font-semibold text-white mt-4">Options:</h4><ul><li><strong>Standard Package:</strong> <strong>₮250,000/hour</strong>. No editing. Stabilized and color-corrected raw footage delivered within 24 hours.</li><li><strong>Express Package:</strong> <strong>₮350,000/hour</strong>. Raw footage provided instantly during the event for immediate social media posting.</li><li><strong>Add-on:</strong> A 1-minute highlight video set to the client's music - <strong>₮100,000</strong>.</li></ul>` },
+                    { title: "Wedding Cinematography", price: "Starts from ₮250,000/hr", short_desc: "Collaborating with the main wedding videographer to capture unforgettable aerial shots.", details: `<p>Providing general aerial shots for the final wedding film.</p><h4 class="font-semibold text-white mt-4">Options:</h4><ul><li><strong>Collaboration:</strong> <strong>₮250,000/hour</strong>. Delivering raw, stabilized footage in a pre-agreed resolution and FPS.</li><li><strong>One-Shot Wedding Video:</strong> <strong>₮800,000</strong>. A complex option based on the 'One-Shot Tour' principles, which is challenging to organize during a live wedding, hence the higher price.</li></ul>` },
+                    { title: "Real Estate Showcase", price: "Starts from ₮1,000,000", short_desc: "A 'One-Shot' video with optional motion graphics to highlight property features.", details: `<p>Preparation is similar to the 'One-Shot Tour'. The client can opt-out of sound design in favor of graphic elements.</p><h4 class="font-semibold text-white mt-4">Pricing:</h4><ul><li><strong>One-Shot Video:</strong> <strong>₮1,000,000</strong></li><li><strong>Add-on:</strong> Motion Graphics (text tracking via After Effects to show square footage, etc.) - <strong>₮200,000</strong></li><li><strong>Add-on:</strong> Sound Design - <strong>₮150,000</strong></li></ul>` },
+                    { title: "Live FPV Broadcasting", price: "₮250,000/hour", short_desc: "Live stream from the drone for events, competitions, or weddings.", details: `<p>Providing a direct HDMI feed from the drone to the director's control panel.</p><h4 class="font-semibold text-white mt-4">Technical Specs:</h4><ul><li><strong>Signal:</strong> HDMI 1080p</li><li><strong>FPS:</strong> 25 or 50 (at the director's request)</li><li><strong>Communication:</strong> Via intercom systems (provided by the broadcast team) in English.</li></ul>` },
+                    { title: "Drone Repair & Tuning", price: "Starts from ₮50,000", short_desc: "Diagnostics, repair, tuning, and consultation for your FPV drone.", details: `<h4 class="font-semibold text-white mt-4">Services:</h4><ul><li><strong>Repair:</strong> <strong>Starts from ₮100,000</strong> (price may increase depending on the scope of work; any price increase will be justified).</li><li><strong>Tuning & Consultation:</strong> <strong>₮50,000</strong>. Includes drone tuning, a full check-up of your FPV kit, and advice to improve longevity and flight safety.</li></ul>` },
+                    { title: "Custom Drone Assembly", price: "₮250,000 + cost of parts", short_desc: "A turnkey solution: we build and configure an FPV drone specifically for your needs.", details: `<p>I will personally order the parts, assemble, and configure the drone, calibrating all electronics and equipment to provide you with a ready-to-fly solution.</p><h4 class="font-semibold text-white mt-4">What's included:</h4><ul><li>Ordering parts, assembly, and configuration</li><li>A complete, ready-to-fly drone</li><li>Consumables and spare parts</li><li>Consultation on location selection, radio signal specifics, and safe flying practices</li></ul><p class="mt-4"><strong>Service Fee:</strong> <strong>₮250,000</strong> on top of the cost for the drone and all its components, including shipping to Mongolia. Receipts provided upon request.</p>` }
+                ],
+                advantage: {
+                    items: [
+                        { title: "First-Person Immersion", content: "Unlike standard drones (like DJI Mavic), FPV (First-Person View) is a completely different flight philosophy. I don't look at a phone screen; I wear FPV goggles and see the world through the drone's eyes, piloting it with surgical precision. This allows for trajectories impossible for automated systems: flying through tight gaps, following a subject at arm's length, and literally 'dancing' in the air." },
+                        { title: "Two Styles, Limitless Possibilities", content: "My experience allows me to work in two distinct styles, using a specific type of drone for each:<br><br><strong>Cinematic Grace:</strong> For promo videos, real estate, or weddings, I use lightweight and quiet drones (cinewhoops). They are safe for indoor flights and around people, creating smooth and mesmerizing shots.<br><br><strong>Extreme Dynamics:</strong> To convey energy and drive, nothing beats FPV. For filming drift, rally, races, and other high-speed events, I use powerful 5-inch drones. They can chase a car at over 150 km/h, creating fierce and thrilling footage that gets the viewer's heart racing." },
+                        { title: "Mastery & Safety", content: "<strong>Constant Improvement:</strong> FPV piloting skills require hundreds of hours of practice. I hone my skills daily in professional simulators to ensure the highest quality and stability in real-world conditions.<br><br><strong>Ready for Anything:</strong> In the world of FPV, crashes are part of the process. Unlike expensive and hard-to-repair commercial drones, I have the technical expertise and parts to immediately repair my equipment in the field. This ensures the shoot doesn't stop due to a technical failure.<br><br><strong>Uncompromising Safety:</strong> Before every flight, regardless of the drone's size, I conduct a mandatory safety briefing for everyone involved. Your safety and peace of mind are the absolute priority." }
+                    ]
+                }
             }
+        };
+        
+        // --- SVG ICONS ---
+        const icons = {
+            // Recreated from goggle.png
+            goggles: `<svg class="accordion-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M54 26H10C7.79086 26 6 27.7909 6 30V42C6 44.2091 7.79086 46 10 46H22" stroke="currentColor" stroke-width="4" stroke-linecap="round"/><path d="M42 46H54C56.2091 46 58 44.2091 58 42V30C58 27.7909 56.2091 26 54 26" stroke="currentColor" stroke-width="4" stroke-linecap="round"/><path d="M24 46C24 50.4183 27.5817 54 32 54C36.4183 54 40 50.4183 40 46" stroke="currentColor" stroke-width="4" stroke-linecap="round"/><path d="M6 32L2 30" stroke="currentColor" stroke-width="4" stroke-linecap="round"/><path d="M58 32L62 30" stroke="currentColor" stroke-width="4" stroke-linecap="round"/></svg>`,
+            // Recreated from drone.png and motor.png
+            droneStyles: `<svg class="accordion-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M32 28V54" stroke="currentColor" stroke-width="4" stroke-linecap="round"/><path d="M20 22L44 34" stroke="currentColor" stroke-width="4" stroke-linecap="round"/><path d="M44 22L20 34" stroke="currentColor" stroke-width="4" stroke-linecap="round"/><circle cx="20" cy="20" r="8" stroke="currentColor" stroke-width="4"/><circle cx="44" cy="20" r="8" stroke="currentColor" stroke-width="4"/><circle cx="20" cy="36" r="8" stroke="currentColor" stroke-width="4"/><circle cx="44" cy="36" r="8" stroke="currentColor" stroke-width="4"/></svg>`,
+            // Recreated from tools.png
+            safety: `<svg class="accordion-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M58 24L40 6" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M34 12L16 30L34 48L52 30L34 12Z" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M6 40L24 58" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>`
         };
 
         // --- DOM ELEMENTS ---
@@ -287,6 +297,9 @@
         const langEnBtn = document.getElementById('lang-en');
         const mainHeadline = document.getElementById('main-headline');
         const mainSubheadline = document.getElementById('main-subheadline');
+        const servicesTitle = document.getElementById('services-title');
+        const accordionContainer = document.getElementById('accordion-container');
+        const whatsappText = document.getElementById('whatsapp-text');
         
         let currentLang = 'mn';
 
@@ -298,15 +311,19 @@
 
             mainHeadline.textContent = data.headline;
             mainSubheadline.textContent = data.subheadline;
+            servicesTitle.textContent = data.servicesTitle;
+            whatsappText.textContent = data.whatsappText;
 
+            // Render Services
             servicesGrid.innerHTML = '';
             data.services.forEach((service, index) => {
                 const card = document.createElement('div');
                 card.className = 'card group rounded-2xl p-6 flex flex-col cursor-pointer';
-                // Add animation delay for a staggered effect
                 card.style.animationDelay = `${index * 100}ms`;
-                
                 card.innerHTML = `
+                    <div class="animated-prop">
+                        <svg viewBox="0 0 64 64" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M32.5 35C32.5 22.0122 21.9878 11.5 9 11.5V8.5C23.6589 8.5 35.5 20.3411 35.5 35H32.5Z" /><path d="M29 32C41.9878 32 52.5 42.5122 52.5 55.5V58.5C40.8411 58.5 29 46.6589 29 32Z" /><path d="M35 32C22.0122 32 11.5 21.4878 11.5 8.5V5.5C23.1589 5.5 35 17.3411 35 32Z" /></svg>
+                    </div>
                     <div class="flex-grow">
                         <h3 class="text-xl font-bold text-white">${service.title}</h3>
                         <p class="text-gray-400 mt-2">${service.short_desc}</p>
@@ -318,11 +335,35 @@
                         </div>
                     </div>
                 `;
-                // Make the whole card clickable
                 card.addEventListener('click', () => openModal(index));
                 servicesGrid.appendChild(card);
             });
 
+            // Render Advantage Section
+            accordionContainer.innerHTML = '';
+            const advantageIcons = [icons.goggles, icons.droneStyles, icons.safety];
+            data.advantage.items.forEach((item, index) => {
+                const accordionItem = document.createElement('div');
+                accordionItem.className = 'accordion-item rounded-lg';
+                accordionItem.innerHTML = `
+                    <button class="accordion-header w-full flex justify-between items-center text-left p-6">
+                        <div class="flex items-center">
+                            ${advantageIcons[index]}
+                            <span class="text-lg font-semibold text-white">${item.title}</span>
+                        </div>
+                        <span class="accordion-arrow text-blue-400">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                        </span>
+                    </button>
+                    <div class="accordion-content">
+                        <p class="text-gray-400">${item.content}</p>
+                    </div>
+                `;
+                accordionContainer.appendChild(accordionItem);
+            });
+
+
+            // Update language button styles
             if (lang === 'mn') {
                 langMnBtn.classList.add('active');
                 langEnBtn.classList.remove('active');
@@ -349,27 +390,23 @@
         }
 
         // --- EVENT LISTENERS ---
-        langMnBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            renderContent('mn');
-        });
-        langEnBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            renderContent('en');
-        });
+        langMnBtn.addEventListener('click', (e) => { e.stopPropagation(); renderContent('mn'); });
+        langEnBtn.addEventListener('click', (e) => { e.stopPropagation(); renderContent('en'); });
         
         modalClose.addEventListener('click', closeModal);
-        modal.addEventListener('click', (e) => {
-            // Close if clicking on the backdrop's parent container
-            if (e.target.id === 'modal') {
-                closeModal();
-            }
-        });
-        
-        document.addEventListener('keydown', (e) => {
-            if (e.key === "Escape" && !modal.classList.contains('hidden')) {
-                closeModal();
-            }
+        modal.addEventListener('click', (e) => { if (e.target.id === 'modal') closeModal(); });
+        document.addEventListener('keydown', (e) => { if (e.key === "Escape" && !modal.classList.contains('hidden')) closeModal(); });
+
+        // Accordion Logic
+        accordionContainer.addEventListener('click', (e) => {
+            const header = e.target.closest('.accordion-header');
+            if (!header) return;
+
+            const item = header.parentElement;
+            const isOpen = item.classList.contains('is-open');
+
+            Array.from(accordionContainer.children).forEach(child => child.classList.remove('is-open'));
+            if (!isOpen) item.classList.add('is-open');
         });
 
         // --- INITIAL RENDER ---
